@@ -1,0 +1,12 @@
+{
+  "domain": "kuni",
+  "name": "Kuni",
+  "codeowners": ["@taltaub"],
+  "config_flow": true,
+  "documentation": "https://github.com/taltaub/kuni-integration",
+  "integration_type": "device",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/taltaub/kuni-integration/issues",
+  "requirements": ["pycognito==2024.5.1"],
+  "version": "1.1.0"
+}

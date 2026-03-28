@@ -1,0 +1,37 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add Kuni",
+        "description": "Sign in with the same email and password as the Kuni app (AWS Cognito). Every device on this account is added automatically. API host and organization are fixed in the integration code.",
+        "data": {
+          "email": "Email address",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not reach the API or login failed",
+      "no_devices": "No devices were returned for this account",
+      "invalid_auth": "Invalid email or password",
+      "missing_dependency": "The pycognito package could not be loaded. Restart Home Assistant after install."
+    }
+  },
+  "entity": {
+    "switch": {
+      "power": {
+        "name": "Power"
+      }
+    },
+    "number": {
+      "intensity": {
+        "name": "Intensity"
+      }
+    },
+    "select": {
+      "current_scent": {
+        "name": "Current scent"
+      }
+    }
+  }
+}

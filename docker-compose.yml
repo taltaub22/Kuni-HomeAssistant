@@ -1,0 +1,16 @@
+# Home Assistant dev: http://localhost:8123
+# First run creates ./ha-config. Edit kuni code live; restart HA or reload config entries as needed.
+
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: homeassistant-kuni-dev
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - "8123:8123"
+    environment:
+      TZ: ${TZ:-UTC}
+    volumes:
+      - ./ha-config:/config
+      - ./custom_components:/config/custom_components
