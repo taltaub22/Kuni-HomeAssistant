@@ -14,7 +14,7 @@ from .api import KuniApi
 
 _LOGGER = logging.getLogger(__name__)
 
-SCAN_INTERVAL = timedelta(seconds=30)
+SCAN_INTERVAL = timedelta(seconds=10)
 
 
 class KuniDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
