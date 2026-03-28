@@ -35,6 +35,10 @@ SHADOW_POSITION: Final = "position"  # active cartridge index 0..NUM_SCENT_SLOTS
 NUM_SCENT_SLOTS: Final = 3
 SCENT_CATALOG_TTL_SEC: Final = 3600
 
+# Shadow intensity is 0..6; UI uses 1..7 (HA value 1 → device 0).
+INTENSITY_DEVICE_MIN: Final = 0
+INTENSITY_DEVICE_MAX: Final = 6
+
 PLATFORMS: Final = [
     Platform.SWITCH,
     Platform.NUMBER,

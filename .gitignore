@@ -28,6 +28,7 @@ Thumbs.db
 
 # Captures that often contain real tokens (proxy / Postman)
 *.chlsj
+requests.json
 
 # Local Home Assistant profile (docker-compose)
 ha-config/

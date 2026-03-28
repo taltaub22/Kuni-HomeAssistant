@@ -15,14 +15,22 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import (
+    DOMAIN,
+    INTENSITY_DEVICE_MAX,
+    INTENSITY_DEVICE_MIN,
+)
 from .coordinator import KuniDataUpdateCoordinator
+
+# Device sends/receives 0..INTENSITY_DEVICE_MAX; Home Assistant shows 1..(max+1).
+_INTENSITY_HA_MIN = INTENSITY_DEVICE_MIN + 1
+_INTENSITY_HA_MAX = INTENSITY_DEVICE_MAX + 1
 
 ENTITY_DESCRIPTION = NumberEntityDescription(
     key="intensity",
     translation_key="intensity",
-    native_min_value=1,
-    native_max_value=6,
+    native_min_value=_INTENSITY_HA_MIN,
+    native_max_value=_INTENSITY_HA_MAX,
     native_step=1,
     mode=NumberMode.BOX,
 )
@@ -70,25 +78,28 @@ class KuniIntensityNumber(
         )
 
     @property
-    def native_value(self) -> float | None:
+    def native_value(self) -> int | None:
         if self.coordinator.data is None:
             return None
         raw = self.coordinator.data.get("intensity")
         if raw is None:
             return None
         try:
-            v = int(round(float(raw)))
+            device_v = int(round(float(raw)))
         except (TypeError, ValueError):
             return None
-        lo = int(self.entity_description.native_min_value)
-        hi = int(self.entity_description.native_max_value)
-        return float(max(lo, min(v, hi)))
+        device_v = max(
+            INTENSITY_DEVICE_MIN, min(device_v, INTENSITY_DEVICE_MAX)
+        )
+        return device_v + 1
 
     async def async_set_native_value(self, value: float) -> None:
-        lo = int(self.entity_description.native_min_value)
-        hi = int(self.entity_description.native_max_value)
-        sent = max(lo, min(int(round(value)), hi))
+        ha_v = max(
+            _INTENSITY_HA_MIN,
+            min(int(round(value)), _INTENSITY_HA_MAX),
+        )
+        device_v = ha_v - 1
         await self.coordinator.api.async_set_intensity(
-            self.coordinator.device_id, sent
+            self.coordinator.device_id, device_v
         )
         await self.coordinator.async_request_refresh()
