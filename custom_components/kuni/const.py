@@ -6,6 +6,14 @@ from homeassistant.const import Platform
 
 DOMAIN: Final = "kuni"
 
+
+def entity_suggested_object_id(device_id: str, *segments: str) -> str:    
+    rest = "_".join(
+        s.replace("-", "_").replace(" ", "_").lower() for s in segments if s
+    )
+    return f"kuni_{rest}" if rest else f"kuni_"
+
+
 # Aroma / Kuni API (stored in config entry)
 CONF_ACCESS_TOKEN: Final = "access_token"
 CONF_ID_TOKEN: Final = "id_token"

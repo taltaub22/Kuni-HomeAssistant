@@ -11,7 +11,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import StateType
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, NUM_SCENT_SLOTS
+from .const import DOMAIN, NUM_SCENT_SLOTS, entity_suggested_object_id
 from .coordinator import KuniDataUpdateCoordinator
 
 
@@ -60,8 +60,14 @@ class KuniScentSlotSensor(
         self.entity_description = description
         self._slot_index = slot_index
         self._attr_unique_id = (
-            f"{coordinator.config_entry.entry_id}_"
+            f"{DOMAIN}_{coordinator.config_entry.entry_id}_"
             f"{coordinator.device_id}_{description.key}"
+        )
+
+    @property
+    def suggested_object_id(self) -> str:
+        return entity_suggested_object_id(
+            self.coordinator.device_id, self.entity_description.key
         )
 
     @property

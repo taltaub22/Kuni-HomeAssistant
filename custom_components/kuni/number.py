@@ -19,6 +19,7 @@ from .const import (
     DOMAIN,
     INTENSITY_DEVICE_MAX,
     INTENSITY_DEVICE_MIN,
+    entity_suggested_object_id,
 )
 from .coordinator import KuniDataUpdateCoordinator
 
@@ -65,8 +66,14 @@ class KuniIntensityNumber(
         super().__init__(coordinator)
         self.entity_description = description
         self._attr_unique_id = (
-            f"{coordinator.config_entry.entry_id}_"
+            f"{DOMAIN}_{coordinator.config_entry.entry_id}_"
             f"{coordinator.device_id}_{description.key}"
+        )
+
+    @property
+    def suggested_object_id(self) -> str:
+        return entity_suggested_object_id(
+            self.coordinator.device_id, self.entity_description.key
         )
 
     @property

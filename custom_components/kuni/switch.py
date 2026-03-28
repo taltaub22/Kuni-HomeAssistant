@@ -11,7 +11,7 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import DOMAIN, entity_suggested_object_id
 from .coordinator import KuniDataUpdateCoordinator
 
 ENTITY_DESCRIPTION = SwitchEntityDescription(
@@ -48,8 +48,14 @@ class KuniPowerSwitch(CoordinatorEntity[KuniDataUpdateCoordinator], SwitchEntity
         super().__init__(coordinator)
         self.entity_description = description
         self._attr_unique_id = (
-            f"{coordinator.config_entry.entry_id}_"
+            f"{DOMAIN}_{coordinator.config_entry.entry_id}_"
             f"{coordinator.device_id}_{description.key}"
+        )
+
+    @property
+    def suggested_object_id(self) -> str:
+        return entity_suggested_object_id(
+            self.coordinator.device_id, self.entity_description.key
         )
 
     @property
