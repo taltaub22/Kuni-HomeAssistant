@@ -22,6 +22,20 @@ Setup uses the config flow (email and password — same account as the Kuni app)
 
 All devices returned for that account are added automatically.
 
+### Service `kuni.set_timer`
+
+Sets the **run timer** via shadow **`power`** with **seconds** as the value (**0–86400**; **0** = off / clear), matching the device API.
+
+Choose the **Kuni device** (Targets → **Device** in the UI, or `device_id` in YAML). **Duration** is always required in `data`.
+
+```yaml
+service: kuni.set_timer
+target:
+  device_id: abc123your_ha_device_id
+data:
+  duration_seconds: 3600
+```
+
 ## Requirements
 
 - Home Assistant with Brands support (for the integration icon in the UI, **2026.3+** recommended).

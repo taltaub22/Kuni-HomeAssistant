@@ -33,5 +33,21 @@
         "name": "Current scent"
       }
     }
+  },
+  "services": {
+    "set_timer": {
+      "name": "Set timer",
+      "description": "Sets the run timer via shadow power (seconds as value; 0 clears).",
+      "fields": {
+        "device_id": {
+          "name": "Device",
+          "description": "Kuni device, or use Targets → Device."
+        },
+        "duration_seconds": {
+          "name": "Duration",
+          "description": "Seconds until auto-off (0–86400). Use 0 to clear."
+        }
+      }
+    }
   }
 }

@@ -18,6 +18,7 @@ from .const import (
     SHADOW_LIST,
     SHADOW_POSITION,
     SHADOW_POWER,
+    TIMER_MAX_SECONDS,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -214,7 +215,6 @@ class KuniApi:
         self._id_token = refreshed["id_token"]
 
     def _headers(self) -> dict[str, str]:
-        # Match mobile app (Charles): lowercase organizationid / idtoken
         return {
             "Authorization": f"Bearer {self._access_token}",
             "organizationid": self._organization_id,
@@ -498,3 +498,8 @@ class KuniApi:
         """Select active cartridge slot (0 .. NUM_SCENT_SLOTS-1)."""
         idx = max(0, min(int(slot_index), NUM_SCENT_SLOTS - 1))
         await self.async_set_shadow_value(device_id, SHADOW_POSITION, idx)
+
+    async def async_set_timer(self, device_id: str, seconds: int) -> None:
+        """Set run timer via shadow `power` with seconds as value (0 = off / clear)."""
+        sec = max(0, min(int(seconds), TIMER_MAX_SECONDS))
+        await self.async_set_shadow_value(device_id, SHADOW_POWER, sec)

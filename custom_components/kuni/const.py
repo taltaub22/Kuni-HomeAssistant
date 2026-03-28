@@ -7,11 +7,11 @@ from homeassistant.const import Platform
 DOMAIN: Final = "kuni"
 
 
-def entity_suggested_object_id(device_id: str, *segments: str) -> str:    
+def entity_suggested_object_id(device_id: str, *segments: str) -> str:
     rest = "_".join(
         s.replace("-", "_").replace(" ", "_").lower() for s in segments if s
     )
-    return f"kuni_{rest}" if rest else f"kuni_"
+    return f"kuni_{rest}" if rest else f"kuni_{dev}"
 
 
 # Aroma / Kuni API (stored in config entry)
@@ -41,6 +41,9 @@ SHADOW_LIST: Final = "list"
 SHADOW_POSITION: Final = "position"  # active cartridge index 0..NUM_SCENT_SLOTS-1
 
 NUM_SCENT_SLOTS: Final = 3
+TIMER_MAX_SECONDS: Final = 86400  # max seconds for power-based timer (shadow power value)
+
+SERVICE_SET_TIMER: Final = "set_timer"
 SCENT_CATALOG_TTL_SEC: Final = 3600
 
 # Shadow intensity is 0..6; UI uses 1..7 (HA value 1 → device 0).

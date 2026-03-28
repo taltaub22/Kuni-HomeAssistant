@@ -1,0 +1,26 @@
+set_timer:
+  name: Set timer
+  description: >-
+    Sets the run timer using the power shadow field with duration in seconds (same as the app API).
+    Pick the device below or use Targets → Device. 0–86400 seconds; 0 turns off / clears.
+  fields:
+    device_id:
+      name: Device
+      description: Kuni device (Settings → Devices), or use Targets → Device in the UI.
+      required: false
+      selector:
+        device:
+          filter:
+            - integration: kuni
+    duration_seconds:
+      name: Duration
+      description: Seconds until the device turns off (0 clears the timer).
+      required: true
+      example: 3600
+      selector:
+        number:
+          min: 0
+          max: 86400
+          step: 1
+          mode: box
+          unit_of_measurement: s
