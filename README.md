@@ -1,16 +1,25 @@
 # Kuni (Aroma Republic) for Home Assistant
 
-Custom integration for **Kuni** diffusers using the Aroma Republic mobile API (Cognito login, device shadow).
+[![GitHub release](https://img.shields.io/github/v/release/taltaub22/Kuni-HomeAssistant?display_name=tag&sort=semver)](https://github.com/taltaub22/Kuni-HomeAssistant/releases)
+
+Home Assistant integration for **Kuni** diffusers using the Aroma Republic mobile API (Cognito login, device shadow).
 
 ## Installation
 
-### HACS
+### Marketplace (recommended)
 
-1. Open **HACS** → **⋮** (top right) → **Custom repositories**.
-2. Add this repository URL, category **Integration**, then **Add**.
-3. Open **HACS** → **Integrations** → **Explore & download repositories**, find **Kuni**, and **Download**.
-4. Restart Home Assistant.
-5. **Settings** → **Devices & services** → **Add integration** → **Kuni**.
+The built-in **[Marketplace](https://www.home-assistant.io/integrations/marketplace/)** replaced HACS in Home Assistant **2026.11**. It lives under **Settings** → **Marketplace** (administrators only).
+
+1. Go to **Settings** → **Marketplace**, select **Add from link** (upper-right), enter `taltaub22/Kuni-HomeAssistant`, and select **Add**. If asked for **Type**, choose **Integration**.
+2. Open the **Kuni** entry and **Download** it.
+3. Restart Home Assistant.
+4. Add the integration:
+
+   [![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=kuni)
+
+   or go to **Settings** → **Devices & services** → **Add integration** → **Kuni**.
+
+> **On Home Assistant older than 2026.11:** use **HACS** instead — add `https://github.com/taltaub22/Kuni-HomeAssistant` as a custom repository with category **Integration**, then download **Kuni**.
 
 ### Manual
 
@@ -21,6 +30,18 @@ Copy the `custom_components/kuni` folder into your Home Assistant `config/custom
 Setup uses the config flow (email and password — same account as the Kuni app). **API base URL and organization ID** are set in `custom_components/kuni/const.py` (`KUNI_API_BASE_URL`, `KUNI_ORGANIZATION_ID`); change those if you use another tenant or endpoint.
 
 All devices returned for that account are added automatically.
+
+## Provided entities
+
+Each discovered device exposes:
+
+| Entity | Platform | Description |
+| --- | --- | --- |
+| Power | `switch` | Turn the diffuser on/off. |
+| Intensity | `number` | Diffusion intensity (1–7). |
+| Current scent | `select` | Active cartridge position. |
+| Slot 1–3 | `sensor` | Cartridge fill level (%) per slot, with scent name in attributes. |
+| Time Left | `sensor` | Seconds remaining on the run timer (duration). |
 
 ### Service `kuni.set_timer`
 
@@ -43,7 +64,7 @@ data:
 
 ## Support
 
-Use [GitHub Issues](https://github.com/taltaub/kuni-integration/issues) for bugs and feature requests.
+Use [GitHub Issues](https://github.com/taltaub22/Kuni-HomeAssistant/issues) for bugs and feature requests.
 
 ## Disclaimer
 

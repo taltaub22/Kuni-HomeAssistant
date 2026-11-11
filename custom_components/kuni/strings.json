@@ -8,6 +8,14 @@
           "email": "Email address",
           "password": "Password"
         }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate Kuni",
+        "description": "Your Kuni session expired. Sign in again with the same email and password as the Kuni app.",
+        "data": {
+          "email": "Email address",
+          "password": "Password"
+        }
       }
     },
     "error": {
@@ -15,6 +23,10 @@
       "no_devices": "No devices were returned for this account",
       "invalid_auth": "Invalid email or password",
       "missing_dependency": "The pycognito package could not be loaded. Restart Home Assistant after install."
+    },
+    "abort": {
+      "reauth_successful": "Re-authentication was successful",
+      "already_configured": "This Kuni account is already configured"
     }
   },
   "entity": {
@@ -26,6 +38,11 @@
     "number": {
       "intensity": {
         "name": "Intensity"
+      }
+    },
+    "sensor": {
+      "time_left": {
+        "name": "Time Left"
       }
     },
     "select": {

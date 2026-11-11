@@ -1,0 +1,70 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add Kuni",
+        "description": "Sign in with the same email and password as the Kuni app (AWS Cognito). Every device on this account is added automatically. API host and organization are fixed in the integration code.",
+        "data": {
+          "email": "Email address",
+          "password": "Password"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate Kuni",
+        "description": "Your Kuni session expired. Sign in again with the same email and password as the Kuni app.",
+        "data": {
+          "email": "Email address",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not reach the API or login failed",
+      "no_devices": "No devices were returned for this account",
+      "invalid_auth": "Invalid email or password",
+      "missing_dependency": "The pycognito package could not be loaded. Restart Home Assistant after install."
+    },
+    "abort": {
+      "reauth_successful": "Re-authentication was successful",
+      "already_configured": "This Kuni account is already configured"
+    }
+  },
+  "entity": {
+    "switch": {
+      "power": {
+        "name": "Power"
+      }
+    },
+    "number": {
+      "intensity": {
+        "name": "Intensity"
+      }
+    },
+    "sensor": {
+      "time_left": {
+        "name": "Time Left"
+      }
+    },
+    "select": {
+      "current_scent": {
+        "name": "Current scent"
+      }
+    }
+  },
+  "services": {
+    "set_timer": {
+      "name": "Set timer",
+      "description": "Sets the run timer via shadow power (seconds as value; 0 clears).",
+      "fields": {
+        "device_id": {
+          "name": "Device",
+          "description": "Kuni device, or use Targets → Device."
+        },
+        "duration_seconds": {
+          "name": "Duration",
+          "description": "Seconds until auto-off (0–86400). Use 0 to clear."
+        }
+      }
+    }
+  }
+}

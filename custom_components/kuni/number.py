@@ -109,4 +109,4 @@ class KuniIntensityNumber(
         await self.coordinator.api.async_set_intensity(
             self.coordinator.device_id, device_v
         )
-        await self.coordinator.async_request_refresh()
+        await self.coordinator.async_refresh()

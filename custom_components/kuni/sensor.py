@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
-from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
+from homeassistant.components.sensor import (
+    SensorDeviceClass,
+    SensorEntity,
+    SensorEntityDescription,
+    SensorStateClass,
+)
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE
+from homeassistant.const import PERCENTAGE, UnitOfTime
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -26,6 +31,7 @@ async def async_setup_entry(
     ]["coordinators"]
     entities: list[KuniScentSlotSensor] = []
     for coordinator in coordinators.values():
+        entities.append(KuniTimeLeftSensor(coordinator))
         for idx in range(NUM_SCENT_SLOTS):
             key = f"scent_slot_{idx + 1}"
             entities.append(
@@ -119,3 +125,47 @@ class KuniScentSlotSensor(
             "scent_id": row.get("scent_id"),
             "scent_name": str(name) if name else None,
         }
+
+
+class KuniTimeLeftSensor(
+    CoordinatorEntity[KuniDataUpdateCoordinator], SensorEntity
+):
+    """Time left on current run timer, in seconds."""
+
+    _attr_has_entity_name = True
+    _attr_translation_key = "time_left"
+    _attr_device_class = SensorDeviceClass.DURATION
+    _attr_native_unit_of_measurement = UnitOfTime.SECONDS
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_icon = "mdi:timer-outline"
+
+    def __init__(self, coordinator: KuniDataUpdateCoordinator) -> None:
+        super().__init__(coordinator)
+        self._attr_unique_id = (
+            f"{DOMAIN}_{coordinator.config_entry.entry_id}_"
+            f"{coordinator.device_id}_time_left"
+        )
+
+    @property
+    def suggested_object_id(self) -> str:
+        return entity_suggested_object_id(self.coordinator.device_id, "time_left")
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        return DeviceInfo(
+            identifiers={(DOMAIN, self.coordinator.device_id)},
+            name=self.coordinator.device_name,
+            manufacturer="Kuni",
+        )
+
+    @property
+    def native_value(self) -> StateType:
+        if not self.coordinator.data:
+            return None
+        raw = self.coordinator.data.get("time_left_seconds")
+        if raw is None:
+            return None
+        try:
+            return max(0, int(round(float(raw))))
+        except (TypeError, ValueError):
+            return None

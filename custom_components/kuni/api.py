@@ -407,6 +407,7 @@ class KuniApi:
                 "device_name": None,
                 "scent_slots": empty_slots,
                 "scent_position": None,
+                "time_left_seconds": None,
             }
 
         st = _state_from_device(device)
@@ -446,6 +447,9 @@ class KuniApi:
             )
             power_raw = _shadow_field_value(power_field)
             if power_raw is not None:
+                timer_left = _coerce_int(power_raw)
+                if timer_left is not None:
+                    st["time_left_seconds"] = max(0, timer_left)
                 power_b = _coerce_bool(power_raw)
                 if power_b is not None:
                     st["is_on"] = power_b
@@ -464,6 +468,8 @@ class KuniApi:
 
         st["scent_slots"] = scent_slots
         st["scent_position"] = scent_position
+        if "time_left_seconds" not in st:
+            st["time_left_seconds"] = None
         return st
 
     async def async_set_shadow_value(

@@ -1,12 +1,12 @@
 {
   "domain": "kuni",
   "name": "Kuni",
-  "codeowners": ["@taltaub"],
+  "codeowners": ["@taltaub22"],
   "config_flow": true,
-  "documentation": "https://github.com/taltaub/kuni-integration",
+  "documentation": "https://github.com/taltaub22/Kuni-HomeAssistant",
   "integration_type": "device",
-  "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/taltaub/kuni-integration/issues",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/taltaub22/Kuni-HomeAssistant/issues",
   "requirements": ["pycognito==2024.5.1"],
-  "version": "1.0.0"
+  "version": "1.1.0"
 }
