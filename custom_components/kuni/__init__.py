@@ -7,9 +7,15 @@ import logging
 
 import voluptuous as vol
 
+from aiohttp import ClientError, ClientResponseError
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall
-from homeassistant.exceptions import ServiceValidationError
+from homeassistant.exceptions import (
+    ConfigEntryAuthFailed,
+    ConfigEntryNotReady,
+    ServiceValidationError,
+)
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -128,8 +134,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     required = (CONF_ACCESS_TOKEN, CONF_ID_TOKEN)
     if not all(k in data for k in required):
-        _LOGGER.error("Kuni config entry is missing required keys")
-        return False
+        raise ConfigEntryAuthFailed("Kuni config entry is missing required tokens")
 
     session = async_get_clientsession(hass)
     refresh = data.get(CONF_REFRESH_TOKEN) or None
@@ -144,23 +149,27 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     try:
         await api.async_ensure_tokens()
-    except Exception:
-        _LOGGER.exception("Could not obtain API tokens")
-        return False
+    except ClientResponseError as err:
+        if err.status in (401, 403):
+            raise ConfigEntryAuthFailed("Kuni token refresh was rejected") from err
+        raise ConfigEntryNotReady(f"Error refreshing Kuni tokens: {err}") from err
+    except (ClientError, OSError, TimeoutError) as err:
+        raise ConfigEntryNotReady(f"Error refreshing Kuni tokens: {err}") from err
 
     if not api.has_valid_tokens():
-        _LOGGER.error("Kuni integration has no valid access tokens")
-        return False
+        raise ConfigEntryAuthFailed("Kuni integration has no valid access tokens")
 
     try:
         device_rows = await api.async_list_devices()
-    except Exception:
-        _LOGGER.exception("Could not list Kuni devices")
-        return False
+    except ClientResponseError as err:
+        if err.status in (401, 403):
+            raise ConfigEntryAuthFailed("Kuni authentication was rejected") from err
+        raise ConfigEntryNotReady(f"Could not list Kuni devices: {err}") from err
+    except (ClientError, OSError, TimeoutError) as err:
+        raise ConfigEntryNotReady(f"Could not list Kuni devices: {err}") from err
 
     if not device_rows:
-        _LOGGER.error("No Kuni devices returned for this account")
-        return False
+        raise ConfigEntryNotReady("No Kuni devices returned for this account yet")
 
     coordinators: dict[str, KuniDataUpdateCoordinator] = {}
     for row in device_rows:

@@ -6,15 +6,18 @@ import logging
 from datetime import timedelta
 from typing import Any
 
+from aiohttp import ClientResponseError
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import KuniApi
 
 _LOGGER = logging.getLogger(__name__)
 
-SCAN_INTERVAL = timedelta(seconds=10)
+SCAN_INTERVAL = timedelta(seconds=30)
 
 
 class KuniDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
@@ -49,5 +52,11 @@ class KuniDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     async def _async_update_data(self) -> dict[str, Any]:
         try:
             return await self.api.async_get_status(self.device_id)
+        except ClientResponseError as err:
+            if err.status in (401, 403):
+                raise ConfigEntryAuthFailed(
+                    "Kuni authentication expired; please re-authenticate"
+                ) from err
+            raise UpdateFailed(f"Error talking to Kuni device: {err}") from err
         except Exception as err:
             raise UpdateFailed(f"Error talking to Kuni device: {err}") from err
