@@ -77,8 +77,8 @@ class KuniPowerSwitch(CoordinatorEntity[KuniDataUpdateCoordinator], SwitchEntity
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         await self.coordinator.api.async_set_power(self.coordinator.device_id, True)
-        await self.coordinator.async_request_refresh()
+        await self.coordinator.async_refresh()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         await self.coordinator.api.async_set_power(self.coordinator.device_id, False)
-        await self.coordinator.async_request_refresh()
+        await self.coordinator.async_refresh()

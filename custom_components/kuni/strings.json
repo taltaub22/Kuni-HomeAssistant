@@ -28,6 +28,11 @@
         "name": "Intensity"
       }
     },
+    "sensor": {
+      "time_left": {
+        "name": "Time Left"
+      }
+    },
     "select": {
       "current_scent": {
         "name": "Current scent"

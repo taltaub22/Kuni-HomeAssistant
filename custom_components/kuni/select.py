@@ -93,4 +93,4 @@ class KuniCurrentScentSelect(
         await self.coordinator.api.async_set_scent_position(
             self.coordinator.device_id, idx
         )
-        await self.coordinator.async_request_refresh()
+        await self.coordinator.async_refresh()

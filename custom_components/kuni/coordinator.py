@@ -32,11 +32,11 @@ class KuniDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         super().__init__(
             hass,
             _LOGGER,
+            config_entry=entry,
             name=f"kuni_{device_id[:8]}",
             update_interval=SCAN_INTERVAL,
         )
         self.api = api
-        self.config_entry = entry
         self.device_id = device_id
         self._default_name = default_name
 

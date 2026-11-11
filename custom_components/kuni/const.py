@@ -8,6 +8,7 @@ DOMAIN: Final = "kuni"
 
 
 def entity_suggested_object_id(device_id: str, *segments: str) -> str:
+    dev = device_id.replace("-", "_").replace(" ", "_").lower()
     rest = "_".join(
         s.replace("-", "_").replace(" ", "_").lower() for s in segments if s
     )

@@ -111,7 +111,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             )
 
         await coord.api.async_set_timer(device_uuid, call.data["duration_seconds"])
-        await coord.async_request_refresh()
+        await coord.async_refresh()
 
     hass.services.async_register(
         DOMAIN,
