@@ -1,23 +1,25 @@
 # Kuni (Aroma Republic) for Home Assistant
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 [![GitHub release](https://img.shields.io/github/v/release/taltaub22/Kuni-HomeAssistant?display_name=tag&sort=semver)](https://github.com/taltaub22/Kuni-HomeAssistant/releases)
 
 Home Assistant integration for **Kuni** diffusers using the Aroma Republic mobile API (Cognito login, device shadow).
 
 ## Installation
 
-### HACS (recommended)
+### Marketplace (recommended)
 
-[![Open your Home Assistant instance and open the Kuni integration inside HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=taltaub22&repository=Kuni-HomeAssistant&category=integration)
+The built-in **[Marketplace](https://www.home-assistant.io/integrations/marketplace/)** replaced HACS in Home Assistant **2026.11**. It lives under **Settings** → **Marketplace** (administrators only).
 
-1. Open **HACS**, search the store for **Kuni**, and **Download** it (or use the button above).
-2. Restart Home Assistant.
-3. Add the integration:
+1. Go to **Settings** → **Marketplace**, select **Add from link** (upper-right), enter `taltaub22/Kuni-HomeAssistant`, and select **Add**. If asked for **Type**, choose **Integration**.
+2. Open the **Kuni** entry and **Download** it.
+3. Restart Home Assistant.
+4. Add the integration:
 
    [![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=kuni)
 
    or go to **Settings** → **Devices & services** → **Add integration** → **Kuni**.
+
+> **On Home Assistant older than 2026.11:** use **HACS** instead — add `https://github.com/taltaub22/Kuni-HomeAssistant` as a custom repository with category **Integration**, then download **Kuni**.
 
 ### Manual
 
