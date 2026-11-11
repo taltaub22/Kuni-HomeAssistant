@@ -5,7 +5,7 @@
   "config_flow": true,
   "documentation": "https://github.com/taltaub22/Kuni-HomeAssistant",
   "integration_type": "device",
-  "iot_class": "local_polling",
+  "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/taltaub22/Kuni-HomeAssistant/issues",
   "requirements": ["pycognito==2024.5.1"],
   "version": "1.1.0"
